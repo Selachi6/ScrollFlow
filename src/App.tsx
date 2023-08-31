@@ -3,7 +3,6 @@ import { Overview } from './pages/Overview.tsx';
 import { Address } from './pages/Address.tsx';
 
 export const App = () => {
-  console.log(!window.location.search);
   return (
     <div>
       {window.location.search.includes('?address=') && <Address />}
