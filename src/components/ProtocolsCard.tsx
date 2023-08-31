@@ -48,7 +48,7 @@ export const ProtocolsCard: FC<{ wallet: WalletInformation | null }> = ({ wallet
                       >
                         <img
                           className={'w-10 h-10 rounded-full ' + (!protocolState.interactions && 'grayscale')}
-                          src={'/protocols/' + protocolState.id + '.png'}
+                          src={'/zk-flow/protocols/' + protocolState.id + '.png'}
                           alt=""
                         />
                         <div className="font-medium text-white">
