@@ -1,9 +1,14 @@
-import { useEffect } from 'react';
+import { Search } from './pages/Search.tsx';
+import { Overview } from './pages/Overview.tsx';
+import { Address } from './pages/Address.tsx';
 
 export const App = () => {
-  useEffect(() => {
-    window.location.href = 'https://zk-flow.com/search';
-  }, []);
-
-  return <h1>REDIRECTING</h1>;
+  console.log(!window.location.search);
+  return (
+    <div>
+      {window.location.search.includes('?address=') && <Address />}
+      {window.location.search.includes('?overview=true') && <Overview />}
+      {!window.location.search && <Search />}
+    </div>
+  );
 };
