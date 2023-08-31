@@ -7,7 +7,7 @@ export const Header = () => {
     <nav className="bg-gray-800 border-gray-700 border-b fixed top-0 left-0 w-full z-10">
       <div className=" flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="/zk-flow">
-          <img src="/logo.png" className="h-12 mr-3" alt="zkFlow logo" />
+          <img src="/zk-flow/logo.png" className="h-12 mr-3" alt="zkFlow logo" />
         </a>
 
         <button

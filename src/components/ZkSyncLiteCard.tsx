@@ -18,7 +18,7 @@ export const ZkSyncLiteCard: FC<{ wallet: WalletInformation | null }> = ({ walle
       >
         <div className="flex justify-between items-center p-3 cursor-pointer" onClick={handleOpen}>
           <h1 className="text-lg font-bold">
-            <img className="p-2" src="/zksynclite.svg" alt="" />
+            <img className="p-2" src="/zk-flow/zksynclite.svg" alt="" />
           </h1>
           <div className="pl-3 pr-3">
             {show ? <FontAwesomeIcon icon={faAngleUp} /> : <FontAwesomeIcon icon={faAngleDown} />}

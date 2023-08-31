@@ -77,8 +77,8 @@ export const Address = () => {
 
             <img
               className="p-2 cursor-pointer"
-              src="/ads/ad0.svg"
-              alt=""
+              src="/zk-flow/8709f7b4-cb81-4e83-8028-e2942e6f5408/a320b5f5-5b34-4b25-aa28-6d02cf8d9c62.svg"
+              alt="universalchains"
               onClick={() => {
                 window.open('https://www.universalchains.io/', '_blank');
               }}
