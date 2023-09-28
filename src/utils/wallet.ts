@@ -98,6 +98,36 @@ const getInteraction = (transactions: Transaction[], address: string) => {
   return { interactions: interactions, interactionsChange: interactionsChange };
 };
 
+const getBalance = async (address: string) => {
+  let totalBalance = 0;
+  const ethResponse = await axios.post('https://mainnet.era.zksync.io/', {
+    id: 1,
+    jsonrpc: '2.0',
+    method: 'zks_getTokenPrice',
+    params: ['0x0000000000000000000000000000000000000000'],
+  });
+
+  const stable = ['USDC', 'USDT', 'ZKUSD', 'CEBUSD', 'LUSD'];
+
+  try {
+    const response = await axios.get('https://block-explorer-api.mainnet.zksync.io/address/' + address);
+    Object.entries(response.data.balances).forEach((balance: any) => {
+      if (balance[0] === '0x000000000000000000000000000000000000800A')
+        totalBalance += parseInt(balance[1].balance) * 10 ** -18 * parseInt(ethResponse.data.result);
+      if (balance[1].token && balance[1].token.symbol) {
+        if (stable.includes(balance[1].token.symbol)) {
+          totalBalance += parseInt(balance[1].balance) * 10 ** -balance[1].token.decimals;
+        }
+      }
+    });
+  } catch (e) {
+    console.log('Impossible to get balance');
+    return 0;
+  }
+
+  return totalBalance;
+};
+
 export const getWalletInformation = async (address: string) => {
   const transactions = await getTransactionsList(address);
   const zksynclite = await getZksyncLite(address);
@@ -125,6 +155,7 @@ export const getWalletInformation = async (address: string) => {
         lastActivity: 0,
         activatedOn: 0,
       },
+      balance: 0,
     };
 
   const wallet: WalletInformation = {
@@ -149,6 +180,7 @@ export const getWalletInformation = async (address: string) => {
       lastActivity: zksynclite.lastActivity,
       activatedOn: zksynclite.activatedOn,
     },
+    balance: await getBalance(address),
   };
 
   return wallet;

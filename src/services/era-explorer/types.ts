@@ -35,4 +35,5 @@ export interface WalletInformation {
     lastActivity: number;
     activatedOn: number;
   };
+  balance: number;
 }

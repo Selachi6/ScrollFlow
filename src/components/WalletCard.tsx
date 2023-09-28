@@ -52,6 +52,9 @@ export const WalletCard = ({ wallet }: { wallet: WalletInformation }) => {
         <Info title={'Active days'} value={wallet.activeDays.toString()} />
         <Info title={'Contracts'} value={wallet.interactedContracts.toString()} />
       </div>
+      <div className="grid place-items-center mt-5 text-center">
+        <Info title={'Balance'} value={'$' + wallet.balance.toFixed(2)} />
+      </div>
     </div>
   );
 };

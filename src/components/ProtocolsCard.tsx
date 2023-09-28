@@ -9,7 +9,7 @@ export const ProtocolsCard: FC<{ wallet: WalletInformation | null }> = ({ wallet
         <caption className="p-5 text-lg font-semibold text-left text-white bg-gray-800 rounded-t-lg">
           Protocols
           <p className="mt-1 text-sm font-normal text-gray-400">Here is the list of protocols used by this address.</p>
-          <p className="mt-1 text-sm font-normal :text-gray-400">
+          <p className="mt-1 text-sm font-normal text-gray-400">
             Note that it is the first version of zkFlow. If you find an issue, don't hesitate to report it to me on
             twitter (@ByFishh).
           </p>

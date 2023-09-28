@@ -24,6 +24,7 @@ import { Basilisk } from '../protocols/basilisk.ts';
 import { Odos } from '../protocols/odos.ts';
 import { Tevaera } from '../protocols/tevaera.ts';
 import { DraculaFi } from '../protocols/dracula.ts';
+import { VelocoreV2 } from '../protocols/velocorev2.ts';
 
 export const getProtocols = (address: string, transactions: Transaction[]): Protocol[] => {
   const protocols = [
@@ -51,6 +52,7 @@ export const getProtocols = (address: string, transactions: Transaction[]): Prot
     Odos,
     Tevaera,
     DraculaFi,
+    VelocoreV2,
   ];
 
   return protocols
