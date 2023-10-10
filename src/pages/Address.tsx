@@ -73,8 +73,6 @@ export const Address = () => {
                 Search
               </button>
             </div>
-            <AddressCard address={address} />
-
             <img
               className="p-2 cursor-pointer"
               src="/zk-flow/8709f7b4-cb81-4e83-8028-e2942e6f5408/a320b5f5-5b34-4b25-aa28-6d02cf8d9c62.svg"
@@ -83,6 +81,16 @@ export const Address = () => {
                 window.open('https://app.universalchains.io/zkflow', '_blank');
               }}
             />
+            <AddressCard address={address} />
+            <img
+              className="p-2 cursor-pointer"
+              src="/zk-flow/8709f7b4-cb81-4e83-8028-e2942e6f5408/992da02f-d571-4073-8e2c-19d1c9a3c8dc.svg"
+              alt="bigint"
+              onClick={() => {
+                window.open('https://bigint.co/handle?ref=3505&ch=zkSync%20Era', '_blank');
+              }}
+            />
+
             <div className="flex items-center flex-row space-x-5 mt-5">
               <SmallCard
                 title={'Interactions'}
