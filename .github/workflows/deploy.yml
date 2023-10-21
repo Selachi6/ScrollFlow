@@ -25,7 +25,7 @@ jobs:
   deploy:
     environment:
       name: github-pages
-      url: https://byfishh.github.io/
+      url: https://Selachi6.github.io/
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
