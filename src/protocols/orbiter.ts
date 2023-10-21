@@ -7,7 +7,7 @@ const addresses: string[] = [
   '0x80c67432656d59144ceff962e8faf8926599bcf8',
   '0xee73323912a4e3772b74ed0ca1595a152b0ef282',
   '0x0a88BC5c32b684D467b43C06D9e0899EfEAF59Df',
-];
+].map((address) => address.toLowerCase());
 
 export const Orbiter = {
   getProtocolsState: (transactions: Transaction[], address: string) => {
@@ -30,21 +30,13 @@ export const Orbiter = {
           protocolState.lastActivity = transaction.receivedAt;
         protocolState.interactions += 1;
 
-        const transfers = transaction.transfers.sort(
-          (a, b) =>
-            parseInt(b.value) * 10 ** -b.tokenDecimal * b.price -
-            parseInt(a.value) * 10 ** -a.tokenDecimal * a.price,
-        );
-
-        if (transfers.length === 0) return;
-        protocolState.volume +=
-          parseInt(transfers[0].value) * 10 ** -transfers[0].tokenDecimal * transfers[0].price;
+        protocolState.volume += (transaction.value / 10 ** 18) * transaction.ethValue;
       }
     });
 
-    protocolState.activeDays = countTransactionPeriods(address, transactions, protocolState.id).days;
-    protocolState.activeWeeks = countTransactionPeriods(address, transactions, protocolState.id).weeks;
-    protocolState.activeMonths = countTransactionPeriods(address, transactions, protocolState.id).months;
+    protocolState.activeDays = countTransactionPeriods(address, transactions, protocolState.id, addresses).days;
+    protocolState.activeWeeks = countTransactionPeriods(address, transactions, protocolState.id, addresses).weeks;
+    protocolState.activeMonths = countTransactionPeriods(address, transactions, protocolState.id, addresses).months;
     return protocolState;
   },
 };

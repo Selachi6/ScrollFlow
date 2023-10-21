@@ -68,6 +68,7 @@ export const countTransactionPeriods = (
   address: string,
   transactions: Transaction[],
   protocol: string,
+  addresses: string[] = [],
 ): {
   days: number;
   weeks: number;
@@ -75,11 +76,18 @@ export const countTransactionPeriods = (
 } => {
   address;
   protocol;
+
   const uniqueDays: Set<string> = new Set();
   const uniqueWeeks: Set<string> = new Set();
   const uniqueMonths: Set<string> = new Set();
 
   transactions.forEach((transaction) => {
+    if (
+      protocol !== 'scrollbridge' &&
+      !addresses.includes(transaction.to.toLowerCase()) &&
+      !addresses.includes(transaction.from.toLowerCase())
+    )
+      return;
 
     const timestamp = new Date(transaction.receivedAt);
     const year = timestamp.getFullYear();

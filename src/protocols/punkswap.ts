@@ -2,10 +2,7 @@ import { countTransactionPeriods } from '../utils/utils.ts';
 import { Protocol } from '../services/scroll/types.ts';
 import { Transaction } from '../services/scroll/scroll.ts';
 
-const addresses: string[] = [
-  '0x26cB8660EeFCB2F7652e7796ed713c9fB8373f8e',
-  
-].map((address) => address.toLowerCase());
+const addresses: string[] = ['0x26cB8660EeFCB2F7652e7796ed713c9fB8373f8e'].map((address) => address.toLowerCase());
 
 export const PunkSwap = {
   getProtocolsState: (transactions: Transaction[], address: string) => {
@@ -20,31 +17,27 @@ export const PunkSwap = {
       activeWeeks: 0,
       url: 'https://zkscroll.punkswap.exchange/swap/',
     };
-    
-    transactions.forEach((transaction: Transaction) => {
-      
-      if (addresses.includes(transaction.to.toLowerCase())) {
 
+    transactions.forEach((transaction: Transaction) => {
+      if (addresses.includes(transaction.to.toLowerCase())) {
         if (!protocolState.lastActivity) protocolState.lastActivity = transaction.receivedAt;
         if (new Date(protocolState.lastActivity) < new Date(transaction.receivedAt))
-        protocolState.lastActivity = transaction.receivedAt;
+          protocolState.lastActivity = transaction.receivedAt;
         protocolState.interactions += 1;
 
         const transfers = transaction.transfers.sort(
           (a, b) =>
-            parseInt(b.value) * 10 ** -b.tokenDecimal * b.price -
-            parseInt(a.value) * 10 ** -a.tokenDecimal * a.price,
+            parseInt(b.value) * 10 ** -b.tokenDecimal * b.price - parseInt(a.value) * 10 ** -a.tokenDecimal * a.price,
         );
 
         if (transfers.length === 0) return;
-        protocolState.volume +=
-          parseInt(transfers[0].value) * 10 ** -transfers[0].tokenDecimal * transfers[0].price;
+        protocolState.volume += parseInt(transfers[0].value) * 10 ** -transfers[0].tokenDecimal * transfers[0].price;
       }
     });
 
-    protocolState.activeDays = countTransactionPeriods(address, transactions, protocolState.id).days;
-    protocolState.activeWeeks = countTransactionPeriods(address, transactions, protocolState.id).weeks;
-    protocolState.activeMonths = countTransactionPeriods(address, transactions, protocolState.id).months;
+    protocolState.activeDays = countTransactionPeriods(address, transactions, protocolState.id, addresses).days;
+    protocolState.activeWeeks = countTransactionPeriods(address, transactions, protocolState.id, addresses).weeks;
+    protocolState.activeMonths = countTransactionPeriods(address, transactions, protocolState.id, addresses).months;
 
     return protocolState;
   },

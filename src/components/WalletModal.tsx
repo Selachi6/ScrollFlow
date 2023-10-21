@@ -15,10 +15,10 @@ const Wallet: FC<{ address: string }> = ({ address }) => {
           navigator.clipboard.writeText(address);
         }}
       >
-        <FontAwesomeIcon icon={faCopy} color={'white'} size={'lg'} />
+        <FontAwesomeIcon icon={faCopy} color={'red'} size={'lg'} />
       </div>
       <button
-        className="ml-14 text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+        className="ml-14 text-black bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
         onClick={() => {
           dispatch(removeWallet(address));
         }}
@@ -36,11 +36,11 @@ export const WalletModal: FC<{ setWalletModal: Dispatch<SetStateAction<boolean>>
   const [newWallet, setNewWallet] = useState('');
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 w-full overflow-x-hidden overflow-y-hidden h-[calc(100%)] max-h-full bg-black/[.3]">
+    <div className="fixed top-0 left-0 right-0 z-50 w-full overflow-x-hidden overflow-y-hidden h-[calc(100%)] max-h-full bg-black/[.1] backdrop-blur-sm">
       <div className="relative w-full max-w-md h-full ml-auto mr-auto mt-52">
-        <div className="relative rounded-lg shadow bg-gray-700">
+        <div className="relative rounded-lg shadow bg-gray-100">
           <button
-            className="absolute top-3 right-2.5 text-gray-400 bg-transparent rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center hover:bg-gray-600 hover:text-white"
+            className="absolute top-3 right-2.5 text-gray-400 bg-transparent rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center hover:bg-gray-200 hover:text-black"
             onClick={() => {
               setWalletModal(false);
             }}
@@ -63,15 +63,15 @@ export const WalletModal: FC<{ setWalletModal: Dispatch<SetStateAction<boolean>>
             <span className="sr-only">Close modal</span>
           </button>
           <div className="px-6 py-6 lg:px-8">
-            <h3 className="mb-4 text-xl font-medium text-white">Add/remove a wallet</h3>
+            <h3 className="mb-4 text-xl font-medium text-black">Add/remove a wallet</h3>
             <div className="space-y-6">
               <div>
-                <label className="block mb-2 text-sm font-medium text-white">New wallet</label>
+                <label className="block mb-2 text-sm font-medium text-black">New wallet</label>
                 <input
                   type="text"
                   name="text"
                   id="text"
-                  className="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white"
+                  className="border text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5 bg-gray-100 border-gray-500 placeholder-gray-400 text-black"
                   placeholder="0x0000....0000"
                   required
                   onChange={(e) => {
@@ -81,7 +81,7 @@ export const WalletModal: FC<{ setWalletModal: Dispatch<SetStateAction<boolean>>
                 />
               </div>
               <button
-                className="w-full text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
+                className="w-full text-black focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-orange-200 hover:bg-orange-300 focus:ring-orange-200"
                 onClick={() => {
                   if (newWallet.length < 40) return;
                   const newWallets = newWallet.split(',');
@@ -95,7 +95,7 @@ export const WalletModal: FC<{ setWalletModal: Dispatch<SetStateAction<boolean>>
                 Add
               </button>
             </div>
-            <div className="mt-6 h-52 overflow-y-auto scrollbar text-white">
+            <div className="mt-6 h-52 overflow-y-auto scrollbar text-black">
               {wallets.map((wallet: { name: string; address: string }) => {
                 return <Wallet address={wallet.address} key={wallet.address} />;
               })}

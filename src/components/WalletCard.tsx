@@ -6,12 +6,12 @@ import { getTimeAgo } from '../utils/utils.ts';
 
 const Info: FC<{ title: string; value: string; change?: string }> = ({ title, value, change }) => (
   <div className="w-[100px]">
-    <h3 className="text-l text-white">{title}</h3>
+    <h3 className="text-l text-black">{title}</h3>
     <div className="text-center pt-1">
-      <h3 className="mb-2 text-2xl font-extrabold text-blue-600">{value}</h3>
+      <h3 className="mb-2 text-2xl font-extrabold text-orange-600">{value}</h3>
       {change && (
         <div>
-          <div className={'text-l ' + (!change ? 'text-red-400' : 'text-green-400')}>+{change}</div>
+          <div className={'text-l ' + (!change ? 'text-black-400' : 'text-green-400')}>+{change}</div>
           <div className="text-sm text-gray-400">the last 7 days</div>
         </div>
       )}
@@ -20,9 +20,9 @@ const Info: FC<{ title: string; value: string; change?: string }> = ({ title, va
 );
 export const WalletCard = ({ wallet }: { wallet: WalletInformation }) => {
   return (
-    <div className="mb-4 border mt-4 rounded-lg shadow-sm border-gray-700 p-6 bg-gray-800 w-[815px]">
+    <div className="mb-4 border mt-4 rounded-lg shadow-sm border-gray-700 p-6 bg-white bg-opacity-75 w-[815px]">
       <div className="flex">
-        <h1 className="mt-1 font-bold text-2xl text-white mb-5">
+        <h1 className="mt-1 font-bold text-2xl text-black mb-5">
           {wallet.address.slice(0, 6) + '...' + wallet.address.slice(-4)}
         </h1>
         <div
@@ -31,10 +31,10 @@ export const WalletCard = ({ wallet }: { wallet: WalletInformation }) => {
             navigator.clipboard.writeText(wallet.address);
           }}
         >
-          <FontAwesomeIcon icon={faCopy} color={'white'} size={'lg'} />
+          <FontAwesomeIcon icon={faCopy} color={'red'} size={'lg'} />
         </div>
         <button
-          className="w-30 h-10 ml-[500px] text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-4"
+          className="w-30 h-10 ml-[500px] text-black bg-gradient-to-r from-orange-500 via-orange-600 to-orange-200 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-orange-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-4"
           onClick={() => {
             window.open('https://byfishh.github.io/zk-flow?address=' + wallet.address, '_blank')?.focus();
           }}

@@ -9,14 +9,14 @@ interface SmallCardProps {
 
 export const SmallCard: FC<SmallCardProps> = ({ title, value, change, loading }: SmallCardProps) => {
   return (
-    <div className="mb-4 border  rounded-lg shadow-sm 2xl:col-span-2 border-gray-700 p-6 bg-gray-800">
+    <div className="mb-4 border  rounded-lg shadow-sm 2xl:col-span-2 border-gray-700 p-6 bg-white bg-opacity-75">
       <div className="flex space-x-4">
         <div className="w-52 max-w-52 text-center">
           {loading ? (
             <div className="grid place-items-center mt-6">
               <svg
                 aria-hidden="true"
-                className="w-10 h-10 mr-2 animate-spin text-gray-600 fill-blue-600"
+                className="w-10 h-10 mr-2 animate-spin text-gray-600 fill-orange-600"
                 viewBox="0 0 100 101"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -33,10 +33,10 @@ export const SmallCard: FC<SmallCardProps> = ({ title, value, change, loading }:
             </div>
           ) : (
             <div>
-              <h3 className="text-l text-white">{title}</h3>
+              <h3 className="text-l text-black">{title}</h3>
               <div className="text-center pt-7">
-                <h3 className="mb-2 text-5xl font-extrabold text-blue-600">{value}</h3>
-                <div className={'text-l ' + (!change ? 'text-red-400' : 'text-green-400')}>+{change}</div>
+                <h3 className="mb-2 text-5xl font-extrabold text-orange-600">{value}</h3>
+                <div className={'text-l ' + (!change ? 'text-black-400' : 'text-green-400')}>+{change}</div>
                 <div className="text-sm text-gray-400">the last 7 days</div>
               </div>
             </div>

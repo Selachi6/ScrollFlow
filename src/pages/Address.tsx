@@ -55,7 +55,7 @@ export const Address = () => {
               <input
                 type="search"
                 id="default-search"
-                className="outline-none block w-full p-4 pl-10 text-sm border rounded-lg bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                className="outline-none block w-full p-4 pl-10 text-sm border rounded-lg bg-white bg-opacity-75 border-gray-600 placeholder-gray-400 text-black focus:ring-orange-500 focus:border-orange-500"
                 placeholder="Search Address"
                 required
                 onChange={(e) => {
@@ -66,7 +66,7 @@ export const Address = () => {
                 onClick={() => {
                   window.location.href = '/scroll-flow?address=' + searchWallet;
                 }}
-                className="text-white absolute right-2.5 bottom-2.5 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
+                className="text-black absolute right-2.5 bottom-2.5 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 bg-orange-200 hover:bg-orange-300 focus:ring-orange-200"
               >
                 Search
               </button>
@@ -101,7 +101,7 @@ export const Address = () => {
           </div>
         </div>
       ) : (
-        <div className="w-full text-center mt-80 text-red-500 text-3xl">Invalid address</div>
+        <div className="w-full text-center mt-80 text-black-500 text-3xl">Invalid address</div>
       )}
     </>
   );

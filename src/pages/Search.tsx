@@ -18,8 +18,8 @@ export const Search = () => {
       <Header />
       <div className="grid mt-36 place-items-center">
         <div className="grid place-items-center">
-          <h1 className="font-bold text-6xl text-white mb-10 ">ScrollFlow</h1>
-          <p className="text-white font-light text-2xl text-center mr-4 ml-4 max-w-4xl">
+          <h1 className="font-bold text-6xl text-black mb-10 ">ScrollFlow</h1>
+          <p className="text-black font-light text-2xl text-center mr-4 ml-4 max-w-4xl">
             scrollFlow is a website where you can track your address and see how many volume you did on different Scroll
             protocols.
           </p>
@@ -45,14 +45,14 @@ export const Search = () => {
               <input
                 type="search"
                 id="default-search"
-                className="outline-none block w-full p-4 pl-10 text-sm border rounded-lg bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                className="outline-none block w-full p-4 pl-10 text-sm border rounded-lg bg-white bg-opacity-75 border-gray-600 placeholder-gray-400 text-black focus:ring-orange-500 focus:border-orange-500"
                 placeholder="Search Address"
                 required
                 onChange={(e) => setAddress(e.target.value)}
               />
               <button
                 onClick={handleSubmit}
-                className="text-white absolute right-2.5 bottom-2.5 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
+                className="text-black absolute right-2.5 bottom-2.5 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 bg-orange-200 hover:bg-orange-300 focus:ring-orange-200"
               >
                 Search
               </button>

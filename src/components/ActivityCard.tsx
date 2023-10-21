@@ -4,13 +4,13 @@ import { getTimeAgo } from '../utils/utils.ts';
 
 export const ActivityCard: FC<{ wallet: WalletInformation | null }> = ({ wallet }) => {
   return (
-    <div className="mb-4 border rounded-lg shadow-sm 2xl:col-span-2 border-gray-700 p-6 bg-gray-800 h-[245px]">
+    <div className="mb-4 border rounded-lg shadow-sm 2xl:col-span-2 border-gray-700 p-6 bg-white bg-opacity-75 h-[245px]">
       <div className="block space-x-4 w-[347px]">
         {!wallet ? (
           <div className="grid place-items-center mt-6">
             <svg
               aria-hidden="true"
-              className="w-10 h-10 mr-2 animate-spin text-gray-600 fill-blue-600"
+              className="w-10 h-10 mr-2 animate-spin text-gray-600 fill-orange-600"
               viewBox="0 0 100 101"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -30,14 +30,14 @@ export const ActivityCard: FC<{ wallet: WalletInformation | null }> = ({ wallet 
             <li className="pb-4">
               <div className="flex items-center space-x-4">
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate text-white">Last activity</p>
+                  <p className="text-sm font-medium truncate text-black">Last activity</p>
                 </div>
                 <div
                   className={
                     'inline-flex items-center text-base font-semibold ' +
                     (new Date(wallet.lastActivity).getTime() < new Date().getTime() - 86400 * 7 * 1000
-                      ? 'text-red-400'
-                      : 'text-white')
+                      ? 'text-black-400'
+                      : 'text-black')
                   }
                 >
                   {wallet.lastActivity ? getTimeAgo(wallet.lastActivity) : 'Never'}
@@ -47,9 +47,9 @@ export const ActivityCard: FC<{ wallet: WalletInformation | null }> = ({ wallet 
             <li className="py-4">
               <div className="flex items-center space-x-4">
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate text-white">Active day(s)</p>
+                  <p className="text-sm font-medium truncate text-black">Active day(s)</p>
                 </div>
-                <div className="inline-flex items-center text-base font-semibold  text-white">
+                <div className="inline-flex items-center text-base font-semibold  text-black">
                   {wallet.activeDays + (wallet.activeDays === 1 ? ' day' : ' days')}
                 </div>
               </div>
@@ -57,9 +57,9 @@ export const ActivityCard: FC<{ wallet: WalletInformation | null }> = ({ wallet 
             <li className="py-4">
               <div className="flex items-center space-x-4">
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate text-white">Active week(s)</p>
+                  <p className="text-sm font-medium truncate text-black">Active week(s)</p>
                 </div>
-                <div className="inline-flex items-center text-base font-semibold text-white">
+                <div className="inline-flex items-center text-base font-semibold text-black">
                   {wallet.activeWeeks + (wallet.activeWeeks === 1 ? ' week' : ' weeks')}
                 </div>
               </div>
@@ -67,9 +67,9 @@ export const ActivityCard: FC<{ wallet: WalletInformation | null }> = ({ wallet 
             <li className="pb-0 pt-4">
               <div className="flex items-center space-x-4">
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate text-white">Active month(s)</p>
+                  <p className="text-sm font-medium truncate text-black">Active month(s)</p>
                 </div>
-                <div className="inline-flex items-center text-base font-semibold text-white">
+                <div className="inline-flex items-center text-base font-semibold text-black">
                   {wallet.activeMonths + (wallet.activeMonths === 1 ? ' month' : ' months')}
                 </div>
               </div>

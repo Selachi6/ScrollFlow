@@ -22,7 +22,6 @@ export interface Transfer {
   tokenName: string;
   tokenDecimal: number;
   price: number;
-
 }
 
 export interface Transaction {
@@ -30,6 +29,7 @@ export interface Transaction {
   to: string;
   from: string;
   fee: string;
+  value: number;
   receivedAt: number;
   transfers: Transfer[];
   ethValue: number;
@@ -38,7 +38,7 @@ export interface Transaction {
 export const getTokenList = async (address: string): Promise<Token[]> => {
   return axios
     .get(`https://blockscout.scroll.io/api?module=account&action=tokenlist&address=${address}`)
-    
+
     .then((res) => {
       const tokens = res.data.result;
 
@@ -57,16 +57,17 @@ export const getTokenList = async (address: string): Promise<Token[]> => {
 
 const getAllTransfers = async (address: string): Promise<Transfer[]> => {
   let url = `https://api.scrollscan.com/api?module=account&action=tokentx&address=${address}&startblock=0&endblock=2500000&sort=asc&apikey=YourApiKeyToken`;
-  
-  
+
   const transfers: Transfer[] = [];
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
     try {
       const response: AxiosResponse = await axios.get(url);
+
       if (response.status === 200) {
         const data = response.data.result;
+
         transfers.push(...data);
 
         if (!response.data.links || !response.data.links.next) {
@@ -101,20 +102,17 @@ const assignTransferValues = async (transactions: Transaction[]) => {
   };
 
   transactions.forEach((transaction: Transaction) => {
-
     transaction.transfers.forEach((transfer: Transfer) => {
       transfer.price = tokensPrice[transfer.tokenSymbol.toUpperCase()];
-
     });
-   
+
     transaction.transfers = transaction.transfers.filter((transfer: Transfer) => transfer.price !== undefined);
   });
-  
 };
 
 export const getTransactionsList = async (address: string): Promise<Transaction[]> => {
   let url = `https://api.scrollscan.com/api?module=account&action=txlist&address=${address}&startblock=1&endblock=99999999&sort=asc&apikey=YourApiKeyToken`;
-  
+
   const transactions: Transaction[] = [];
 
   const ethResponse = await axios.post('https://mainnet.era.zksync.io/', {
@@ -131,20 +129,20 @@ export const getTransactionsList = async (address: string): Promise<Transaction[
       if (response.status === 200) {
         const data = response.data.result;
         data.forEach((transaction: any) => {
-          const { hash, to, from, cumulativeGasUsed, timeStamp } = transaction;
+          const { hash, to, from, cumulativeGasUsed, timeStamp, value } = transaction;
+
           transactions.push({
             hash: hash,
             to: to,
             from: from,
             fee: cumulativeGasUsed,
+            value: value,
             receivedAt: Number(timeStamp) * 1000,
             transfers: [],
-            
-            
+
             ethValue: parseInt(ethResponse.data.result),
           });
         });
-        
 
         if (!response.data.links || !response.data.links.next) {
           break;
@@ -158,7 +156,6 @@ export const getTransactionsList = async (address: string): Promise<Transaction[
       console.error('Error occurred while making the request:', error);
       break;
     }
-    
   }
 
   const transfers: Transfer[] = await getAllTransfers(address);
@@ -173,5 +170,4 @@ export const getTransactionsList = async (address: string): Promise<Transaction[
   await assignTransferValues(transactions);
 
   return transactions;
-  
 };

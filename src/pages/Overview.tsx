@@ -74,11 +74,11 @@ export const Overview = () => {
       <div className="grid mt-36 place-items-center">
         <div className="flex">
           <div>
-            <h1 className="font-bold text-6xl text-white mb-5">Wallets overviews</h1>
-            <p className="text-white font-light text-2xl max-w-4xl">Here is all the data of your wallets.</p>
+            <h1 className="font-bold text-6xl text-black mb-5">Wallets overviews</h1>
+            <p className="text-black font-light text-2xl max-w-4xl">Here is all the data of your wallets.</p>
           </div>
           <button
-            className="w-40 h-14 mt-3 ml-36 text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+            className="w-40 h-14 mt-3 ml-36 text-white bg-gradient-to-r from-orange-500  to-orange-400 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-orange-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
             onClick={() => setWalletsModal(!walletsModal)}
           >
             Manage wallets
@@ -109,7 +109,6 @@ export const Overview = () => {
         ))}
       </div>
       {walletsModal && <WalletModal setWalletModal={setWalletsModal} />}
-
     </>
   );
 };
