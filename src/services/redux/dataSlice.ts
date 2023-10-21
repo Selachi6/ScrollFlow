@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { WalletInformation } from '../era-explorer/types.ts';
+import { WalletInformation } from '../scroll/types.ts';
 
 export interface WalletsState {
   wallets: WalletInformation[];
