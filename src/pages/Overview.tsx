@@ -6,8 +6,7 @@ import { WalletModal } from '../components/WalletModal.tsx';
 import { useAppDispatch, useAppSelector } from '../services/redux/hooks.ts';
 import { getWalletInformation } from '../utils/wallet.ts';
 import { addWalletData, removeWalletData } from '../services/redux/dataSlice.ts';
-import { WalletInformation } from '../services/era-explorer/types.ts';
-import { DonateModal } from '../components/DonateModal.tsx';
+import { WalletInformation } from '../services/scroll/types.ts';
 
 const getTotalFee = (wallets: WalletInformation[]) => {
   let fees = 0;
@@ -44,7 +43,7 @@ const getTotalInteractions = (wallets: WalletInformation[]) => {
 
 export const Overview = () => {
   const [walletsModal, setWalletsModal] = useState(false);
-  document.title = 'zkFlow | Overview';
+  document.title = 'scrollFlow | Overview';
 
   const dispatch = useAppDispatch();
 
@@ -110,7 +109,7 @@ export const Overview = () => {
         ))}
       </div>
       {walletsModal && <WalletModal setWalletModal={setWalletsModal} />}
-      <DonateModal />
+
     </>
   );
 };

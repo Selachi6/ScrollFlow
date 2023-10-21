@@ -1,11 +1,11 @@
-import { Token } from './era-explorer.ts';
+import { Token } from './scroll.ts';
 
 export interface Protocol {
   name: string;
   id: string;
   url: string;
   interactions: number;
-  lastActivity: string;
+  lastActivity: number;
   activeDays: number;
   activeWeeks: number;
   activeMonths: number;
@@ -30,10 +30,5 @@ export interface WalletInformation {
   activeWeeks: number;
   activeMonths: number;
   protocols: Protocol[];
-  zksynclite: {
-    interactions: number;
-    lastActivity: number;
-    activatedOn: number;
-  };
   balance: number;
 }

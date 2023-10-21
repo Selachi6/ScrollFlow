@@ -13,37 +13,32 @@ export interface Token {
 export interface Transfer {
   from: string;
   to: string;
-  transactionHash: string;
-  timestamp: string;
-  amount: string;
-  tokenAddress: string;
-  type: string;
+  hash: string;
+  timeStamp: string;
+  value: string;
+  contractAddress: string;
   fields: null;
-  token: {
-    l2Address: string;
-    l1Address: string;
-    symbol: string;
-    name: string;
-    decimals: number;
-    price: number;
-  };
+  tokenSymbol: string;
+  tokenName: string;
+  tokenDecimal: number;
+  price: number;
+
 }
 
 export interface Transaction {
   hash: string;
   to: string;
   from: string;
-  data: string;
-  isL1Originated: boolean;
   fee: string;
-  receivedAt: string;
+  receivedAt: number;
   transfers: Transfer[];
   ethValue: number;
 }
 
 export const getTokenList = async (address: string): Promise<Token[]> => {
   return axios
-    .get(`https://zksync2-mainnet.zkscan.io/api?module=account&action=tokenlist&address=${address}`)
+    .get(`https://blockscout.scroll.io/api?module=account&action=tokenlist&address=${address}`)
+    
     .then((res) => {
       const tokens = res.data.result;
 
@@ -61,7 +56,9 @@ export const getTokenList = async (address: string): Promise<Token[]> => {
 };
 
 const getAllTransfers = async (address: string): Promise<Transfer[]> => {
-  let url = `https://block-explorer-api.mainnet.zksync.io/address/${address}/transfers?limit=100&page=1`;
+  let url = `https://api.scrollscan.com/api?module=account&action=tokentx&address=${address}&startblock=0&endblock=2500000&sort=asc&apikey=YourApiKeyToken`;
+  
+  
   const transfers: Transfer[] = [];
 
   // eslint-disable-next-line no-constant-condition
@@ -69,11 +66,13 @@ const getAllTransfers = async (address: string): Promise<Transfer[]> => {
     try {
       const response: AxiosResponse = await axios.get(url);
       if (response.status === 200) {
-        const data = response.data.items;
+        const data = response.data.result;
         transfers.push(...data);
 
-        if (response.data.links.next === '') break;
-        url = 'https://block-explorer-api.mainnet.zksync.io/' + response.data.links.next;
+        if (!response.data.links || !response.data.links.next) {
+          break;
+        }
+        url = 'https://rpc.scroll.io/' + response.data.links.next;
       } else {
         console.error('Error occurred while retrieving transactions.');
         break;
@@ -83,6 +82,7 @@ const getAllTransfers = async (address: string): Promise<Transfer[]> => {
       break;
     }
   }
+
   return transfers;
 };
 
@@ -97,22 +97,24 @@ const assignTransferValues = async (transactions: Transaction[]) => {
   const tokensPrice: any = {
     USDC: 1,
     USDT: 1,
-    ZKUSD: 1,
-    CEBUSD: 1,
-    LUSD: 1,
-    ETH: parseInt(ethResponse.data.result),
+    WETH: parseInt(ethResponse.data.result),
   };
 
   transactions.forEach((transaction: Transaction) => {
+
     transaction.transfers.forEach((transfer: Transfer) => {
-      transfer.token.price = tokensPrice[transfer.token.symbol.toUpperCase()];
+      transfer.price = tokensPrice[transfer.tokenSymbol.toUpperCase()];
+
     });
-    transaction.transfers = transaction.transfers.filter((transfer: Transfer) => transfer.token.price !== undefined);
+   
+    transaction.transfers = transaction.transfers.filter((transfer: Transfer) => transfer.price !== undefined);
   });
+  
 };
 
 export const getTransactionsList = async (address: string): Promise<Transaction[]> => {
-  let url = `https://block-explorer-api.mainnet.zksync.io/transactions?address=${address}&limit=100&page=1`;
+  let url = `https://api.scrollscan.com/api?module=account&action=txlist&address=${address}&startblock=1&endblock=99999999&sort=asc&apikey=YourApiKeyToken`;
+  
   const transactions: Transaction[] = [];
 
   const ethResponse = await axios.post('https://mainnet.era.zksync.io/', {
@@ -127,24 +129,27 @@ export const getTransactionsList = async (address: string): Promise<Transaction[
     try {
       const response: AxiosResponse = await axios.get(url);
       if (response.status === 200) {
-        const data = response.data.items;
+        const data = response.data.result;
         data.forEach((transaction: any) => {
-          const { hash, to, from, data, isL1Originated, fee, receivedAt } = transaction;
+          const { hash, to, from, cumulativeGasUsed, timeStamp } = transaction;
           transactions.push({
             hash: hash,
             to: to,
             from: from,
-            data: data,
-            isL1Originated: isL1Originated,
-            fee: fee,
-            receivedAt: receivedAt,
+            fee: cumulativeGasUsed,
+            receivedAt: Number(timeStamp) * 1000,
             transfers: [],
+            
+            
             ethValue: parseInt(ethResponse.data.result),
           });
         });
+        
 
-        if (response.data.links.next === '') break;
-        url = 'https://block-explorer-api.mainnet.zksync.io/' + response.data.links.next;
+        if (!response.data.links || !response.data.links.next) {
+          break;
+        }
+        url = 'https://api.scrollscan.com/' + response.data.links.next;
       } else {
         console.error('Error occurred while retrieving transactions.');
         break;
@@ -153,15 +158,14 @@ export const getTransactionsList = async (address: string): Promise<Transaction[
       console.error('Error occurred while making the request:', error);
       break;
     }
+    
   }
 
   const transfers: Transfer[] = await getAllTransfers(address);
-
   transfers.forEach((transfer: Transfer) => {
-    if (transfer.token === null) return;
     transactions.forEach((transaction: Transaction) => {
-      if (transaction.hash === transfer.transactionHash) {
-        transaction.transfers.push(transfer);
+      if (transaction.hash === transfer.hash) {
+        transaction.transfers.push(transfer); // Access 'transfers' without type assertion
       }
     });
   });
@@ -169,4 +173,5 @@ export const getTransactionsList = async (address: string): Promise<Transaction[
   await assignTransferValues(transactions);
 
   return transactions;
+  
 };

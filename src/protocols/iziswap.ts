@@ -3,23 +3,31 @@ import { Protocol } from '../services/scroll/types.ts';
 import { Transaction } from '../services/scroll/scroll.ts';
 
 const addresses: string[] = [
-  '0x7160570BB153Edd0Ea1775EC2b2Ac9b65F1aB61B',
-  '0x80e38291e06339d10AAB483C65695D004dBD5C69',
-  '0x4e7d2e3f40998daeb59a316148bfbf8efd1f7f3c',
+  '0x2db0AFD0045F3518c77eC6591a542e326Befd3D7',
+  '0x8c7d3063579BdB0b90997e18A770eaE32E1eBb08',
+  '0x4d4673745AAC664eFB9758fdd571F40d78a87bfe',
+  '0xbD6abA1Ef82A4cD6e15CB05e95f433ef48dfb5df',
+  '0x32D02Fc7722E81F6Ac60B87ea8B4b63a52Ad2b55',
+  '0xF4efDB5A1E852f78e807fAE7100B1d38351e38c7',
+  '0xe96526e92ee57bBD468DA1721987aa988b008768',
+  '0x3EF68D3f7664b2805D4E88381b64868a56f88bC4',
+  '0x33531bDBFE34fa6Fd5963D0423f7699775AacaaF',
+  '0x1502d025BfA624469892289D45C0352997251728',
+  '0x19b683A2F45012318d9B2aE1280d68d3eC54D663',  
 ].map((address) => address.toLowerCase());
 
-export const SyncSwap = {
+export const IziSwap = {
   getProtocolsState: (transactions: Transaction[], address: string) => {
     const protocolState: Protocol = {
-      name: 'SyncSwap',
-      id: 'syncswap',
+      name: 'iZiSwap',
+      id: 'iziswap',
       lastActivity: 0,
       volume: 0,
       interactions: 0,
       activeDays: 0,
       activeMonths: 0,
       activeWeeks: 0,
-      url: 'https://syncswap.xyz/',
+      url: 'https://izumi.finance/',
     };
     
     transactions.forEach((transaction: Transaction) => {
@@ -46,6 +54,7 @@ export const SyncSwap = {
     protocolState.activeDays = countTransactionPeriods(address, transactions, protocolState.id).days;
     protocolState.activeWeeks = countTransactionPeriods(address, transactions, protocolState.id).weeks;
     protocolState.activeMonths = countTransactionPeriods(address, transactions, protocolState.id).months;
+
     return protocolState;
   },
 };

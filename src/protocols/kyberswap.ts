@@ -3,23 +3,21 @@ import { Protocol } from '../services/scroll/types.ts';
 import { Transaction } from '../services/scroll/scroll.ts';
 
 const addresses: string[] = [
-  '0x7160570BB153Edd0Ea1775EC2b2Ac9b65F1aB61B',
-  '0x80e38291e06339d10AAB483C65695D004dBD5C69',
-  '0x4e7d2e3f40998daeb59a316148bfbf8efd1f7f3c',
+  '0x2db0AFD0045F3518c77eC6591a542e326Befd3D7',
 ].map((address) => address.toLowerCase());
 
-export const SyncSwap = {
+export const KyberSwap = {
   getProtocolsState: (transactions: Transaction[], address: string) => {
     const protocolState: Protocol = {
-      name: 'SyncSwap',
-      id: 'syncswap',
+      name: 'KyberSwap',
+      id: 'kyberswap',
       lastActivity: 0,
       volume: 0,
       interactions: 0,
       activeDays: 0,
       activeMonths: 0,
       activeWeeks: 0,
-      url: 'https://syncswap.xyz/',
+      url: 'https://kyberswap.com/',
     };
     
     transactions.forEach((transaction: Transaction) => {
@@ -46,6 +44,7 @@ export const SyncSwap = {
     protocolState.activeDays = countTransactionPeriods(address, transactions, protocolState.id).days;
     protocolState.activeWeeks = countTransactionPeriods(address, transactions, protocolState.id).weeks;
     protocolState.activeMonths = countTransactionPeriods(address, transactions, protocolState.id).months;
+
     return protocolState;
   },
 };

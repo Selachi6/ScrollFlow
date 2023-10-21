@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { WalletInformation } from '../services/era-explorer/types.ts';
+import { WalletInformation } from '../services/scroll/types.ts';
 import { getTimeAgo } from '../utils/utils.ts';
 
 export const ProtocolsCard: FC<{ wallet: WalletInformation | null }> = ({ wallet }) => {
@@ -10,8 +10,8 @@ export const ProtocolsCard: FC<{ wallet: WalletInformation | null }> = ({ wallet
           Protocols
           <p className="mt-1 text-sm font-normal text-gray-400">Here is the list of protocols used by this address.</p>
           <p className="mt-1 text-sm font-normal text-gray-400">
-            Note that it is the first version of zkFlow. If you find an issue, don't hesitate to report it to me on
-            twitter (@ByFishh).
+            Note that it is the first version of ScrollFlow. If you find an issue, don't hesitate to report it to me on
+            twitter (@Selachi667). Credits to @byfishh for the work !.
           </p>
         </caption>
         <thead className="text-xs uppercase bg-gray-700 text-gray-400">
@@ -48,7 +48,7 @@ export const ProtocolsCard: FC<{ wallet: WalletInformation | null }> = ({ wallet
                       >
                         <img
                           className={'w-10 h-10 rounded-full ' + (!protocolState.interactions && 'grayscale')}
-                          src={'/zk-flow/protocols/' + protocolState.id + '.png'}
+                          src={'/scroll-flow/protocols/' + protocolState.id + '.png'}
                           alt=""
                         />
                         <div className="font-medium text-white">
@@ -70,7 +70,7 @@ export const ProtocolsCard: FC<{ wallet: WalletInformation | null }> = ({ wallet
                     </th>
                     <td className="px-6 py-4 text-center font-medium text-white">{protocolState.interactions}</td>
                     <td className="px-6 py-4 text-center font-medium">
-                      {protocolState.lastActivity === '' ? (
+                      {!protocolState.lastActivity ? (
                         <span className="text-xs font-medium mr-2 px-2.5 py-0.5 rounded bg-gray-700 text-red-400 border border-red-400">
                           No activity
                         </span>

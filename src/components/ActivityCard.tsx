@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { WalletInformation } from '../services/era-explorer/types.ts';
+import { WalletInformation } from '../services/scroll/types.ts';
 import { getTimeAgo } from '../utils/utils.ts';
 
 export const ActivityCard: FC<{ wallet: WalletInformation | null }> = ({ wallet }) => {

@@ -1,34 +1,31 @@
 import { countTransactionPeriods } from '../utils/utils.ts';
-import { Protocol } from '../services/scroll/types.ts';
 import { Transaction } from '../services/scroll/scroll.ts';
+import { Protocol } from '../services/scroll/types.ts';
 
 const addresses: string[] = [
-  '0x7160570BB153Edd0Ea1775EC2b2Ac9b65F1aB61B',
-  '0x80e38291e06339d10AAB483C65695D004dBD5C69',
-  '0x4e7d2e3f40998daeb59a316148bfbf8efd1f7f3c',
-].map((address) => address.toLowerCase());
+  '0x4C0926FF5252A435FD19e10ED15e5a249Ba19d79',
+  '0xF8B1378579659D8F7EE5f3C929c2f3E332E41Fd6',
+];
 
-export const SyncSwap = {
+export const Scroll = {
   getProtocolsState: (transactions: Transaction[], address: string) => {
     const protocolState: Protocol = {
-      name: 'SyncSwap',
-      id: 'syncswap',
+      name: 'Scroll Bridge',
+      id: 'scroll',
       lastActivity: 0,
       volume: 0,
       interactions: 0,
       activeDays: 0,
+      url: 'https://scroll.io/bridge',
       activeMonths: 0,
       activeWeeks: 0,
-      url: 'https://syncswap.xyz/',
     };
-    
-    transactions.forEach((transaction: Transaction) => {
-      
-      if (addresses.includes(transaction.to.toLowerCase())) {
 
-        if (!protocolState.lastActivity) protocolState.lastActivity = transaction.receivedAt;
+    transactions.forEach((transaction: Transaction) => {
+      if (addresses.includes(transaction.to.toLowerCase()) || addresses.includes(transaction.from.toLowerCase())) {
+        if (protocolState.lastActivity == 0) protocolState.lastActivity = transaction.receivedAt;
         if (new Date(protocolState.lastActivity) < new Date(transaction.receivedAt))
-        protocolState.lastActivity = transaction.receivedAt;
+          protocolState.lastActivity = transaction.receivedAt;
         protocolState.interactions += 1;
 
         const transfers = transaction.transfers.sort(

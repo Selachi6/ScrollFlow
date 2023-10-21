@@ -6,8 +6,8 @@ export const Header = () => {
   return (
     <nav className="bg-gray-800 border-gray-700 border-b fixed top-0 left-0 w-full z-10">
       <div className=" flex flex-wrap items-center justify-between mx-auto p-4">
-        <a href="/zk-flow">
-          <img src="/zk-flow/logo.png" className="h-12 mr-3" alt="zkFlow logo" />
+        <a href="/scroll-flow">
+          <img src="/scroll-flow/logo.png" className="h-12 mr-3" alt="scrollFlow logo" />
         </a>
 
         <button
@@ -39,7 +39,7 @@ export const Header = () => {
           <ul className="flex flex-col font-medium mt-4 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-gray-800 md:bg-transparent border-gray-700">
             <li>
               <a
-                href="/zk-flow"
+                href="/scroll-flow"
                 className={
                   'block py-2 pl-3 pr-4 rounded md:p-0 bg-blue-600 md:bg-transparent ' +
                   (!window.location.search ? 'text-blue-500' : 'text-white')
@@ -66,7 +66,7 @@ export const Header = () => {
         <ul className="border-t md:hidden p-4 flex flex-col font-medium mt-4 md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-gray-800 md:bg-transparent border-gray-700">
           <li>
             <a
-              href="/zk-flow"
+              href="/scroll-flow"
               className={
                 !window.location.search
                   ? 'block mb-2 py-2 pl-3 pr-4 text-white rounded md:p-0 md:text-blue-500 bg-blue-600 md:bg-transparent'

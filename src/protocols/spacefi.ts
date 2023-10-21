@@ -1,56 +1,50 @@
 import { countTransactionPeriods } from '../utils/utils.ts';
-import { Transaction } from '../services/era-explorer/era-explorer.ts';
-import { Protocol } from '../services/era-explorer/types.ts';
+import { Protocol } from '../services/scroll/types.ts';
+import { Transaction } from '../services/scroll/scroll.ts';
 
-const addresses = [
-  '0x0700fb51560cfc8f896b2c812499d17c5b0bf6a7',
-  '0xe8826fc3ce6e74932144dbc2b369e7b52e88193a',
-  '0x7cf85f98c0339559eab22deea1e018721e800add',
-  '0xb376fceacd9fef24a342645cbf72a4c439ea0614',
-  '0xacf5a67f2fcfeda3946ccb1ad9d16d2eb65c3c96',
-  '0x4ad9ee1698b6d521ebb2883dd9fc3655c7553561',
-  '0x00f093ff2bca9da894396336286c7c5bd2310ca5',
-  '0x307baa142ba2bfa4a3059efb631899c992a193ee',
-  '0x77d807b74d54b81a87a5769176bc7719f676c8ce',
-  '0xbe7d1fd1f6748bbdefc4fbacafbb11c6fc506d1d',
-];
+const addresses: string[] = [
+  '0x18b71386418A9FCa5Ae7165E31c385a5130011b6',
+  
+].map((address) => address.toLowerCase());
 
 export const SpaceFi = {
   getProtocolsState: (transactions: Transaction[], address: string) => {
     const protocolState: Protocol = {
       name: 'SpaceFi',
       id: 'spacefi',
-      lastActivity: '',
+      lastActivity: 0,
       volume: 0,
       interactions: 0,
       activeDays: 0,
-      url: 'https://spacefi.io/',
       activeMonths: 0,
       activeWeeks: 0,
+      url: 'https://swap-scroll.spacefi.io/#/swap',
     };
-
+    
     transactions.forEach((transaction: Transaction) => {
+      
       if (addresses.includes(transaction.to.toLowerCase())) {
-        if (protocolState.lastActivity === '') protocolState.lastActivity = transaction.receivedAt;
+
+        if (!protocolState.lastActivity) protocolState.lastActivity = transaction.receivedAt;
         if (new Date(protocolState.lastActivity) < new Date(transaction.receivedAt))
-          protocolState.lastActivity = transaction.receivedAt;
+        protocolState.lastActivity = transaction.receivedAt;
         protocolState.interactions += 1;
 
         const transfers = transaction.transfers.sort(
           (a, b) =>
-            parseInt(b.amount) * 10 ** -b.token.decimals * b.token.price -
-            parseInt(a.amount) * 10 ** -a.token.decimals * a.token.price,
+            parseInt(b.value) * 10 ** -b.tokenDecimal * b.price -
+            parseInt(a.value) * 10 ** -a.tokenDecimal * a.price,
         );
 
         if (transfers.length === 0) return;
         protocolState.volume +=
-          parseInt(transfers[0].amount) * 10 ** -transfers[0].token.decimals * transfers[0].token.price;
+          parseInt(transfers[0].value) * 10 ** -transfers[0].tokenDecimal * transfers[0].price;
       }
     });
 
-    protocolState.activeDays = countTransactionPeriods(address, transactions, protocolState.id, addresses).days;
-    protocolState.activeWeeks = countTransactionPeriods(address, transactions, protocolState.id, addresses).weeks;
-    protocolState.activeMonths = countTransactionPeriods(address, transactions, protocolState.id, addresses).months;
+    protocolState.activeDays = countTransactionPeriods(address, transactions, protocolState.id).days;
+    protocolState.activeWeeks = countTransactionPeriods(address, transactions, protocolState.id).weeks;
+    protocolState.activeMonths = countTransactionPeriods(address, transactions, protocolState.id).months;
 
     return protocolState;
   },

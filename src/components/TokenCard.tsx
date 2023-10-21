@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Token } from '../services/era-explorer/era-explorer.ts';
+import { Token } from '../services/scroll/scroll.ts';
 
 export const TokenCard: FC<{ tokens: Token[] | undefined }> = ({ tokens }) => {
   return (
@@ -14,7 +14,7 @@ export const TokenCard: FC<{ tokens: Token[] | undefined }> = ({ tokens }) => {
                   <div
                     className="flex items-center space-x-4 cursor-pointer"
                     onClick={() => {
-                      window.open('https://explorer.zksync.io/address/' + token.contractAddress, '_blank');
+                      window.open('https://scrollscan.com/address/' + token.contractAddress, '_blank');
                     }}
                   >
                     <div className="flex-1 min-w-0">

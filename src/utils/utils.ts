@@ -1,4 +1,4 @@
-import { Transaction } from '../services/era-explorer/era-explorer.ts';
+import { Transaction } from '../services/scroll/scroll.ts';
 
 const getWeekNumber = (date: Date): string => {
   const year = date.getFullYear();
@@ -68,7 +68,6 @@ export const countTransactionPeriods = (
   address: string,
   transactions: Transaction[],
   protocol: string,
-  addresses: string[] = [],
 ): {
   days: number;
   weeks: number;
@@ -81,20 +80,7 @@ export const countTransactionPeriods = (
   const uniqueMonths: Set<string> = new Set();
 
   transactions.forEach((transaction) => {
-    if (
-      protocol !== 'zksynceraportal' &&
-      !addresses.includes(transaction.to.toLowerCase()) &&
-      !addresses.includes(transaction.from.toLowerCase())
-    )
-      return;
 
-    if (protocol === 'zksynceraportal') {
-      if (
-        !transaction.data.startsWith('0x51cff8d9') &&
-        !(transaction.to.toLowerCase() === address.toLowerCase() && transaction.isL1Originated)
-      )
-        return;
-    }
     const timestamp = new Date(transaction.receivedAt);
     const year = timestamp.getFullYear();
     const month = timestamp.getMonth();

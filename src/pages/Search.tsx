@@ -4,7 +4,7 @@ import { useState } from 'react';
 export const Search = () => {
   const [address, setAddress] = useState<string>('');
 
-  document.title = 'zkFlow | Search';
+  document.title = 'scrollFlow | Search';
   const handleSubmit = () => {
     if (address === '' || address.length !== 42 || !address.startsWith('0x')) {
       alert('Please enter valid address');
@@ -18,9 +18,9 @@ export const Search = () => {
       <Header />
       <div className="grid mt-36 place-items-center">
         <div className="grid place-items-center">
-          <h1 className="font-bold text-6xl text-white mb-10 ">zkFlow</h1>
+          <h1 className="font-bold text-6xl text-white mb-10 ">ScrollFlow</h1>
           <p className="text-white font-light text-2xl text-center mr-4 ml-4 max-w-4xl">
-            zkFlow is a website where you can track your address and see how many volume you did on different zkSync
+            scrollFlow is a website where you can track your address and see how many volume you did on different Scroll
             protocols.
           </p>
           <div className="w-9/12 mt-20">

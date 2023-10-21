@@ -1,22 +1,8 @@
-import { WalletInformation } from '../services/era-explorer/types.ts';
-import { getTokenList, getTransactionsList, Transaction } from '../services/era-explorer/era-explorer.ts';
+import { WalletInformation } from '../services/scroll/types.ts';
+import { getTokenList, getTransactionsList, Transaction } from '../services/scroll/scroll.ts';
 import { getActive } from './utils.ts';
 import axios from 'axios';
 import { getProtocols } from './protocols.ts';
-
-const getZksyncLite = async (address: string) => {
-  const response = await axios.get(
-    `https://api.zksync.io/api/v0.2/accounts/${address}/transactions?from=latest&limit=100&direction=older`,
-  );
-
-  if (response.data.result.list.length === 0) return { interactions: 0, lastActivity: 0, activatedOn: 0 };
-
-  return {
-    interactions: response.data.result.list.length,
-    lastActivity: new Date(response.data.result.list[0].createdAt).getTime(),
-    activatedOn: new Date(response.data.result.list[response.data.result.list.length - 1].createdAt).getTime(),
-  };
-};
 
 const getLastActivity = (transactions: Transaction[]) => {
   let lastActivity = 0;
@@ -51,7 +37,8 @@ const getFees = (transactions: Transaction[], address: string) => {
 
   transactions.forEach((transaction) => {
     if (transaction.from.toLowerCase() !== address.toLowerCase()) return;
-    const tmpFees = parseInt(transaction.fee, 16) * 10 ** -18 * transaction.ethValue;
+    const tmpFees = Number(transaction.fee) / 1000000000 * transaction.ethValue;
+    
     fees += tmpFees;
     if (new Date(transaction.receivedAt).getTime() >= new Date().getTime() - 86400 * 7 * 1000) {
       feesChange += tmpFees;
@@ -68,11 +55,11 @@ const getVolume = (transactions: Transaction[]) => {
   transactions.forEach((transaction) => {
     const transfers = transaction.transfers.sort(
       (a, b) =>
-        parseInt(b.amount) * 10 ** -b.token.decimals * b.token.price -
-        parseInt(a.amount) * 10 ** -a.token.decimals * a.token.price,
+        parseInt(b.value) * 10 ** -b.tokenDecimal * b.price -
+        parseInt(a.value) * 10 ** -a.tokenDecimal * a.price,
     );
     if (transfers.length === 0) return;
-    const tmpVolume = parseInt(transfers[0].amount) * 10 ** -transfers[0].token.decimals * transfers[0].token.price;
+    const tmpVolume = parseInt(transfers[0].value) * 10 ** -transfers[0].tokenDecimal * transfers[0].price;
     volume += tmpVolume;
     if (new Date(transaction.receivedAt).getTime() >= new Date().getTime() - 86400 * 7 * 1000) {
       volumeChange += tmpVolume;
@@ -103,20 +90,20 @@ const getBalance = async (address: string) => {
   const ethResponse = await axios.post('https://mainnet.era.zksync.io/', {
     id: 1,
     jsonrpc: '2.0',
-    method: 'zks_getTokenPrice',
+    method: 'getTokenPrice',
     params: ['0x0000000000000000000000000000000000000000'],
   });
 
-  const stable = ['USDC', 'USDT', 'ZKUSD', 'CEBUSD', 'LUSD'];
+  const stable = ['USDC', 'USDT'];
 
   try {
-    const response = await axios.get('https://block-explorer-api.mainnet.zksync.io/address/' + address);
-    Object.entries(response.data.balances).forEach((balance: any) => {
-      if (balance[0] === '0x000000000000000000000000000000000000800A')
-        totalBalance += parseInt(balance[1].balance) * 10 ** -18 * parseInt(ethResponse.data.result);
-      if (balance[1].token && balance[1].token.symbol) {
-        if (stable.includes(balance[1].token.symbol)) {
-          totalBalance += parseInt(balance[1].balance) * 10 ** -balance[1].token.decimals;
+    const response = await axios.get('https://blockscout.scroll.io/api?module=account&action=tokenlist&address=' + address );
+    Object.entries(response.data.result).forEach((result: any) => {
+      if (result[0].contractAddress === '0x5300000000000000000000000000000000000004')
+        totalBalance += parseInt(result[1].result) * 10 ** -18 * parseInt(ethResponse.data.result);
+      if (result[1].token && result[1].token.symbol) {
+        if (stable.includes(result[1].token.symbol)) {
+          totalBalance += parseInt(result[1].balance) * 10 ** -result[1].token.decimals;
         }
       }
     });
@@ -130,7 +117,6 @@ const getBalance = async (address: string) => {
 
 export const getWalletInformation = async (address: string) => {
   const transactions = await getTransactionsList(address);
-  const zksynclite = await getZksyncLite(address);
 
   if (transactions.length === 0)
     return {
@@ -150,11 +136,6 @@ export const getWalletInformation = async (address: string) => {
       activeWeeks: 0,
       activeMonths: 0,
       protocols: getProtocols(address, transactions),
-      zksynclite: {
-        interactions: 0,
-        lastActivity: 0,
-        activatedOn: 0,
-      },
       balance: 0,
     };
 
@@ -175,11 +156,6 @@ export const getWalletInformation = async (address: string) => {
     activeWeeks: getActive(address, transactions).weeks,
     activeMonths: getActive(address, transactions).months,
     protocols: getProtocols(address, transactions),
-    zksynclite: {
-      interactions: zksynclite.interactions,
-      lastActivity: zksynclite.lastActivity,
-      activatedOn: zksynclite.activatedOn,
-    },
     balance: await getBalance(address),
   };
 

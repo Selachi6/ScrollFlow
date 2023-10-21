@@ -2,13 +2,11 @@ import { Header } from '../components/Header.tsx';
 import { SmallCard } from '../components/SmallCard.tsx';
 import { getWalletInformation } from '../utils/wallet.ts';
 import { useEffect, useState } from 'react';
-import { WalletInformation } from '../services/era-explorer/types.ts';
+import { WalletInformation } from '../services/scroll/types.ts';
 import { TokenCard } from '../components/TokenCard.tsx';
 import { ActivityCard } from '../components/ActivityCard.tsx';
-import { ZkSyncLiteCard } from '../components/ZkSyncLiteCard.tsx';
 import { ProtocolsCard } from '../components/ProtocolsCard.tsx';
 import { AddressCard } from '../components/AddressCard.tsx';
-import { DonateModal } from '../components/DonateModal.tsx';
 
 const isValidateAddress = (address: string) => {
   return address !== '' && address.length === 42 && address.startsWith('0x');
@@ -17,7 +15,7 @@ const isValidateAddress = (address: string) => {
 export const Address = () => {
   const address = window.location.search.split('=')[1];
 
-  document.title = 'zkFlow | ' + address.slice(0, 6) + '...' + address.slice(-4);
+  document.title = 'ScrollFlow | ' + address.slice(0, 6) + '...' + address.slice(-4);
 
   const [wallet, setWallet] = useState<WalletInformation | null>(null);
   const [searchWallet, setSearchWallet] = useState<string>('');
@@ -66,30 +64,14 @@ export const Address = () => {
               />
               <button
                 onClick={() => {
-                  window.location.href = '/zk-flow?address=' + searchWallet;
+                  window.location.href = '/scroll-flow?address=' + searchWallet;
                 }}
                 className="text-white absolute right-2.5 bottom-2.5 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
               >
                 Search
               </button>
             </div>
-            <img
-              className="p-2 cursor-pointer"
-              src="/zk-flow/8709f7b4-cb81-4e83-8028-e2942e6f5408/a320b5f5-5b34-4b25-aa28-6d02cf8d9c62.svg"
-              alt="universalchains"
-              onClick={() => {
-                window.open('https://app.universalchains.io/zkflow', '_blank');
-              }}
-            />
             <AddressCard address={address} />
-            <img
-              className="p-2 cursor-pointer"
-              src="/zk-flow/8709f7b4-cb81-4e83-8028-e2942e6f5408/992da02f-d571-4073-8e2c-19d1c9a3c8dc.svg"
-              alt="bigint"
-              onClick={() => {
-                window.open('https://bigint.co/handle?ref=3505&ch=zkSync%20Era', '_blank');
-              }}
-            />
 
             <div className="flex items-center flex-row space-x-5 mt-5">
               <SmallCard
@@ -115,14 +97,12 @@ export const Address = () => {
               <TokenCard tokens={wallet?.token} />
               <ActivityCard wallet={wallet} />
             </div>
-            <ZkSyncLiteCard wallet={wallet} />
             <ProtocolsCard wallet={wallet} />
           </div>
         </div>
       ) : (
         <div className="w-full text-center mt-80 text-red-500 text-3xl">Invalid address</div>
       )}
-      <DonateModal />
     </>
   );
 };
