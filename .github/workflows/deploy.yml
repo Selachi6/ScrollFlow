@@ -25,7 +25,7 @@ jobs:
   deploy:
     environment:
       name: github-pages
-      url: https://Selachi6.github.io/
+      url: https://selachi6.github.io/scroll-flow
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
